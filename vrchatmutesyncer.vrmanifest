@@ -1,0 +1,19 @@
+{
+	"applications": [
+		{
+			"app_key": "vrchatmutesyncer",
+			"launch_type": "binary",
+			"binary_path_windows": "app.exe",
+			"strings": {
+				"en_us": {
+					"name": "VRChat Mute Syncer",
+					"description": "Sync VRChat microphone mute state with Discord"
+				}
+				"ja_jp": {
+					"name": "VRChat Mute Syncer",
+					"description": "VRChatのマイクミュート状態をDiscordと同期します"
+				}
+			}
+		}
+	]
+}

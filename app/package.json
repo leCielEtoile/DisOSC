@@ -1,0 +1,20 @@
+{
+  "name": "vrchat-discord-rpc",
+  "version": "1.0.0",
+  "description": "VRChat Discord RPC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "esbuild index.js --bundle --platform=node --outfile=index-bundle.js"
+  },
+  "author": "cieletoile",
+  "license": "MIT",
+  "dependencies": {
+    "discord-rpc": "4.0.1",
+    "esbuild": "^0.20.0",
+    "node-osc": "9.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  }
+}
