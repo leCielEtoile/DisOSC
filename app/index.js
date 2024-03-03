@@ -1,4 +1,4 @@
-import { Server } from 'node-osc';
+import { Client, Server } from 'node-osc';
 import RPC from "discord-rpc";
 import fs from 'fs';
 import * as DEFAULT_CONFIG from './config-def.json'; //Configの初期設定
@@ -16,15 +16,18 @@ try {
 }
 
 // VRChatからのOSCメッセージを受信するサーバーを作成
-const server = new Server(print_conf.VRCHAT_PORT, '0.0.0.0'); // VRChatからのメッセージを待ち受けるポート
+const vclient = new Client('127.0.0.1', print_conf.VRCHAT_SEND_PORT); // VRChatへメッセージを送るポート
+const vserver = new Server(print_conf.VRCHAT_RECEVE_PORT, '0.0.0.0'); // VRChatからのメッセージを待ち受けるポート
 
 // DiscordにRPCメッセージを送信するクライアントを作成
 const client = new RPC.Client({ transport: "ipc" }); // Discordにメッセージを送るためのクライアント
 
-server.on('/avatar/parameters/DisOSC/micmute', async (params) => {
-    try{
+
+//マイクミュート
+vserver.on('/avatar/parameters/DisOSC/micmute', async (params) => {
+    try {
         // 受信したメッセージの内容をログに出力
-        debugprint(params[0]," ： ",params[1]);
+        debugprint("Receve　", params[0]," ： ",params[1]);
 
         // Discordのミュート設定を更新
         await client.setVoiceSettings({
@@ -33,6 +36,49 @@ server.on('/avatar/parameters/DisOSC/micmute', async (params) => {
     }catch(e){
         // エラーが出た場合エラーログを出力
         console.error("エラー:", e.message);
+    }
+});
+
+//スピーカーミュート
+vserver.on('/avatar/parameters/DisOSC/speakermute', async (params) => {
+    try {
+        // 受信したメッセージの内容をログに出力
+        debugprint("Receve　", params[0], " ： ", params[1]);
+
+        // Discordのミュート設定を更新
+        await client.setVoiceSettings({
+            deaf: !!params[1], // = /DisOSC/micmute
+        });
+    } catch (e) {
+        // エラーが出た場合エラーログを出力
+        console.error("エラー:", e.message);
+    }
+});
+
+
+//状態同期
+vserver.on('/avatar/parameters/DisOSC/sync', async (params) => {
+
+    if (params[1]) {
+        try {
+            // 受信したメッセージの内容をログに出力
+            debugprint("Receve　", params[0], " ： ", params[1]);
+
+            // Discordのミュート設定を更新
+            const getState = await client.getVoiceSettings();
+
+            //現在のDiscordミュート状態を送信
+            vclient.send(['/avatar/parameters/DisOSC/micmute', getState.mute]);
+            debugprint("Send　", '/avatar/parameters/DisOSC/micmute', " ： ", getState.mute);
+
+            vclient.send(['/avatar/parameters/DisOSC/speakermute', getState.deaf]);
+            debugprint("Send　", '/avatar/parameters/DisOSC/speakermute', " ： ", getState.deaf);
+
+        } catch (e) {
+            // エラーが出た場合エラーログを出力
+            console.error("エラー:", e.message);
+        }
+
     }
 });
 
@@ -50,7 +96,7 @@ server.on('/avatar/parameters/DisOSC/micmute', async (params) => {
         
         //認証失敗の場合例外処理
         if (!auth_result.accessToken) {
-            throw 'Failed authentication with token';
+            throw new Error('Failed authentication with token');
         }
 
         debugprint("Authentication with token");
