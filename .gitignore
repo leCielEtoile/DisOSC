@@ -1,0 +1,8 @@
+# Visual Studio cache directory
+.vs/
+
+# node.js module directory
+.node_modules/
+
+# VSCode
+.vscode/
