@@ -2,7 +2,7 @@
 .vs/
 
 # node.js module directory
-.node_modules/
+node_modules/
 
 # VSCode
 .vscode/
