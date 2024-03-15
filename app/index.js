@@ -122,8 +122,7 @@ vserver.on('/avatar/parameters/DisOSC/sync', async (params) => {
                 clientId: print_conf.DISCORD_CLIENT_ID,
                 clientSecret: print_conf.DISCORD_CLIENT_SECRET,
                 scopes: ["rpc", "rpc.voice.write"],
-                redirectUri: `http://127.0.0.1:${print_conf.DISCORD_PORT}/`,
-                accessToken: print_conf.ACCESS_TOKEN,
+                redirectUri: `http://127.0.0.1:${print_conf.DISCORD_PORT}/`
             });
             debugprint("Authentication without token")
 
@@ -135,7 +134,7 @@ vserver.on('/avatar/parameters/DisOSC/sync', async (params) => {
             debugprint("Reacquire token and store in config.");
 
             console.log("Discordにログインしました。VRChatのメニューからミュート状態を同期できます。");
-            debugprint("Reacquire token and store in config.");
+            console.log("終了する際はCtrl+Cを押すか右上のXを押してください。");
         } catch (error) {
             // ログインに失敗した場合のエラーログを出力
             console.log("Discordへのログインに失敗しました。configの値を確認してください")

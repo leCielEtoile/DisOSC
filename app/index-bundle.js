@@ -8477,7 +8477,8 @@ var config_def_default = {
   DISCORD_CLIENT_ID: "0123456789123456789",
   DISCORD_CLIENT_SECRET: "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456",
   DISCORD_PORT: "53134",
-  VRCHAT_PORT: "9001",
+  VRCHAT_SEND_PORT: "9000",
+  VRCHAT_RECEVE_PORT: "9001",
   DEBUG: false,
   ACCESS_TOKEN: ""
 };
@@ -8560,8 +8561,7 @@ vserver.on("/avatar/parameters/DisOSC/sync", async (params) => {
         clientId: print_conf.DISCORD_CLIENT_ID,
         clientSecret: print_conf.DISCORD_CLIENT_SECRET,
         scopes: ["rpc", "rpc.voice.write"],
-        redirectUri: `http://127.0.0.1:${print_conf.DISCORD_PORT}/`,
-        accessToken: print_conf.ACCESS_TOKEN
+        redirectUri: `http://127.0.0.1:${print_conf.DISCORD_PORT}/`
       });
       debugprint("Authentication without token");
       print_conf.ACCESS_TOKEN = reauth_result.accessToken;
@@ -8570,7 +8570,7 @@ vserver.on("/avatar/parameters/DisOSC/sync", async (params) => {
       import_fs.default.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(print_conf, null, " "));
       debugprint("Reacquire token and store in config.");
       console.log("Discord\u306B\u30ED\u30B0\u30A4\u30F3\u3057\u307E\u3057\u305F\u3002VRChat\u306E\u30E1\u30CB\u30E5\u30FC\u304B\u3089\u30DF\u30E5\u30FC\u30C8\u72B6\u614B\u3092\u540C\u671F\u3067\u304D\u307E\u3059\u3002");
-      debugprint("Reacquire token and store in config.");
+      console.log("\u7D42\u4E86\u3059\u308B\u969B\u306FCtrl+C\u3092\u62BC\u3059\u304B\u53F3\u4E0A\u306EX\u3092\u62BC\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
     } catch (error) {
       console.log("Discord\u3078\u306E\u30ED\u30B0\u30A4\u30F3\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002config\u306E\u5024\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044");
       if (print_conf.DEBUG) {
