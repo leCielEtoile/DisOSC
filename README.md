@@ -9,7 +9,7 @@ Node.js 20.11
 Windows 10
 
 ## Usage
-https://docs.google.com/document/d/16MmYJ9b3GAG77bfsqB_qY-u74pDxeKi4HHWYg1KFt78/edit
+https://docs.google.com/document/d/1qBsqtzD7IXIl0mJotUKWpe10h4QguzFwz6C1RO4wYBw/edit?usp=sharing
 
 ## Author
 
